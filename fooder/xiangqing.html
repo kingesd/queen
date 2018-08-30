@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>无人点单无人支付系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="css/basic.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <style>
+        .content{
+            width: 750px;
+            margin: 0 auto;
+        }
+        .item .item_list li {
+            width: 100%;
+            padding: .5rem;
+            box-sizing: border-box;
+        }
+        img{
+            width: 100%;
+            /*height: 500px;*/
+        }
+       a{
+           text-decoration: none;
+           font-size: 25px;
+           color: black
+       }
+    </style>
+</head>
+<body>
+
+<div class="content">
+    <div class="item">
+      <button><a href="index.html">< 返回</a></button> 
+        <ul class="item_list">
+            <!-- <li>
+                <div class="inner">
+                    <img src="images/1.jpg" />
+                    <h1 style="font-size: 35px;padding: 10px 0">娃娃菜炖豆腐</h1>
+                    <p style="color: red;font-size: 25px;"><span>2 </span>份</p>
+                </div>
+                <br>
+                <div class="inner">
+                    <h1 style="font-size: 35px;padding: 20px 0">商品详情</h1>
+                    <p style="font-size: 25px;">dfhdjfhdjfhdgfjgjhfjgjgggjgkjghjgkhj</p>
+                </div>
+            </li> -->
+        </ul>
+    </div>
+</div>
+
+<script src="jquery-1.12.3.min.js"></script>
+<!-- <script src="../public/js/underscore-min.js"></script> -->
+<script>
+    var loc=location.href;
+    console.log(loc)
+    var n1=loc.length;//地址的总长度
+    console.log(n1)
+    var n2=loc.indexOf("=");//取得=号的位置
+    console.log(n2)
+    var id=decodeURI(loc.substr(n2+28));//从=号后面的内容
+    console.log(id)
+     $.ajax({
+        url:"http://172.16.49.27:3000/menulist",
+        dataType:"json",
+        type:"GET",
+        success:function (data) {
+            var date = data.result;
+            console.log(date)
+            for (var i = 0; i < date.length;i++){
+             var das = date[i].fengmian+'.jpg'
+                if(id==das){
+                    var li = $("<li></li>")
+                    var divs = $("<div class='inner'></div>")
+                    var img = $("<img class='item_img' src='../点餐/uploads/"+ date[i].fengmian+ ".jpg' alt=''>")
+                    var h1 = $("<h1 class='inner'></h1>").html(date[i].dishes)
+                    var p2 = $("<p style='font-size: 20px;'></p>").html('排名：'+date[i].sort)
+                    var divs1=$("<div class='inner'></div>")
+                    var h2=$("<h1 class='inner'></h1>").html("商品详情")
+                  
+                    var p3 = $("<p style='font-size: 18px;'>"+date[i].miaoshu+"</p>")
+                    
+                    img.appendTo(divs)
+                    h1.appendTo(divs)
+                    p2.appendTo(divs)
+                
+                    
+                    h2.appendTo(divs1)
+                    p3.appendTo(divs1)
+                    divs.appendTo(li)
+                    divs1.appendTo(li)
+                    li.appendTo($(".item_list"))
+                }        
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

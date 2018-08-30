@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/basic.css">
+</head>
+<body>
+    <div class="heads">
+        <header class="index_header">
+        
+                <div class="hlist">
+                    <img src="images/rexiao.png"/>
+                    <p>热销榜</p>				
+                </div>
+                
+                <div class="hlist">
+                    <img src="images/caidan.png" />
+                    <p>点过的菜</p>				
+                </div>
+                <div class="hlist">
+                    
+                    <img src="images/sousuo.png"/>
+                    <p>搜你喜欢</p>				
+                </div>
+            
+            </header>
+</div>
+<div class="content">
+
+    </div>
+<script src="jquery-1.12.3.min.js"></script>
+
+<script>
+   $.ajax({
+				url:"http://172.16.49.27:3000/fenlei",
+                dataType:"json",
+				type:"GET",
+				success:function (data) {
+					var date = data.result;
+					console.log(date)
+					for (var i = 0; i < date.length;i++){  
+					    var div = $("<div class='item' name="+date[i].leibie+"><h3 class='item_cate'>"+date[i].leibie+"</h3></div>");
+					    div.appendTo(".content")
+					}
+                }
+			})
+            $.ajax({
+				url:"http://172.16.49.27:3000/menulist",
+                dataType:"json",
+				type:"GET",
+				success:function (data) {
+					var date = data.result;
+					console.log(date)
+					for (var i = 0; i < date.length;i++){
+						// console.log($(".item .item_cate").eq(i).html());
+						var item=$(".item .item_cate").eq(i).html()
+						console.log(item);
+						var nimei=$(".item").eq(i)
+                        // console.log(nimei)
+						// console.log(date[i].type)
+						// console.log(da);
+						var ul = $("<ul class='item_list'></ul>");
+						for(j=0;j<date.length;j++){
+                       
+							if(date[j].leibie==item){
+							console.log(111)
+							var li = $("<li></li>")
+							var divs = $("<div class='inner'></div>")
+							var img = $("<img class='item_img' src='../点餐/uploads/"+ date[i].fengmian+ ".jpg' alt=''>")
+							var p1 = $("<p class='title'></p>").html(date[j].dishes)
+							var p2 = $("<p class='price'></p>").html(date[j].price)
+		                    img.appendTo(divs)
+		                    p1.appendTo(divs)
+		                    p2.appendTo(divs)
+		                    divs.appendTo(li)
+		                    li.appendTo(ul)
+                            console.log(ul)
+		                   
+		                    
+						}
+						}
+                      
+						ul.appendTo(nimei)
+					}
+
+
+
+                    
+                }
+			})
+            
+				
+			$(".content").delegate($(".item .item_list li"),"click",function(e){
+				
+				var getval=e.toElement.currentSrc.substr(17,54);
+                console.log(getval);
+				location.href="xiangqing.html?"+"txt="+getval;
+		    });
+</script>
+</body>
+</html>
